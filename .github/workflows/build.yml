@@ -1,36 +1,36 @@
-name: Build YouTubeTV GeckoReceiver APK
+name: Android Build
 
 on:
-  workflow_dispatch:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v4
+    # 1. Checkout repository dengan dukungan Git LFS
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        lfs: true # <-- WAJIB: Mendownload file LFS yang sebenarnya
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: 17
+    # 2. Setup JDK / Java
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+    # 3. Setup Gradle Cache & Permissions
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v3
 
-      - name: Build APK
-        run: |
-          gradle --stop
-          rm -rf ~/.gradle/caches/transforms-*
-          gradle clean assembleDebug --stacktrace
+    - name: Make gradlew executable
+      run: chmod +x gradlew
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: YouTubeTV-GeckoReceiver-debug
-          path: app/build/outputs/apk/debug/*.apk
+    # 4. Build APK
+    - name: Build with Gradle
+      run: ./gradlew assembleDebug
