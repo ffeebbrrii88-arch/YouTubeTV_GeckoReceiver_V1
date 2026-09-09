@@ -16,15 +16,9 @@ android {
     }
 }
 
-repositories {
-    flatDir {
-        dirs 'libs'
-    }
-}
-
 dependencies {
 
     implementation "androidx.appcompat:appcompat:1.6.1"
 
-    implementation(name: "geckoview", ext: "aar")
+    implementation files("libs/geckoview.aar")
 }
