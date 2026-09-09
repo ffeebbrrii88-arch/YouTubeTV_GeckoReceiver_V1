@@ -13,8 +13,6 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
-        with:
-          lfs: true
 
       - name: Setup Java 17
         uses: actions/setup-java@v4
@@ -26,13 +24,12 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Clean Gradle Transform Cache
-        run: |
-          rm -rf ~/.gradle/caches/transforms-*
-
       - name: Build APK
         run: |
-          gradle assembleDebug --stacktrace
+          rm -rf ~/.gradle/caches/transforms-*
+          rm -rf ~/.gradle/caches/modules-2/files-2.1
+          chmod +x gradlew
+          ./gradlew clean assembleDebug --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
