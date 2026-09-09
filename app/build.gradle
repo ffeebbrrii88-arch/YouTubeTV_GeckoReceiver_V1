@@ -4,7 +4,6 @@ plugins {
 
 android {
     namespace "com.example.youtubetvgecko"
-
     compileSdk 35
 
     defaultConfig {
@@ -14,12 +13,9 @@ android {
         versionCode 1
         versionName "1.0"
     }
-
-    buildFeatures {
-        buildConfig true
-    }
 }
 
 dependencies {
+    implementation "androidx.appcompat:appcompat:1.6.1"
     implementation files("libs/geckoview.aar")
 }
